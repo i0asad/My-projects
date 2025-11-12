@@ -35,7 +35,7 @@ public class SalesOrderStatus {
     private OrderStatusId orderStatusId;
 
     @Column(name = "active", nullable = false)
-    private Boolean Active = true;
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -76,7 +76,7 @@ public final class StatusManagementUtil {
                 SalesOrderStatus newStatus = SalesOrderStatus.builder()
                         .salesOrder(order)
                         .orderStatusId(toActivate)
-                        .Active(true)
+                        .active(true)
                         .build();
                 updated.add(newStatus);
                 log.debug("Activated new order status {} for order {}", toActivate, order.getSalesOrderId());
@@ -160,38 +160,38 @@ public final class StatusManagementUtil {
         // Always created
         result.add(SalesOrderStatus.builder()
                 .orderStatusId(OrderStatusId.I_CRTD)
-                .Active(true)
+                .active(true)
                 .build());
 
         if (creationFlags.isApprovalRequired()) {
             result.add(SalesOrderStatus.builder()
                     .orderStatusId(OrderStatusId.E_AWT_APPV)
-                    .Active(true)
+                    .active(true)
                     .build());
         }
 
         if (creationFlags.isCreditBlock() || creationFlags.isFraudHold()) {
             result.add(SalesOrderStatus.builder()
                     .orderStatusId(OrderStatusId.I_DLKD)
-                    .Active(true)
+                    .active(true)
                     .build());
             result.add(SalesOrderStatus.builder()
                     .orderStatusId(OrderStatusId.I_BLKD)
-                    .Active(true)
+                    .active(true)
                     .build());
         }
 
         if (creationFlags.isFraudHold()) {
             result.add(SalesOrderStatus.builder()
                     .orderStatusId(OrderStatusId.E_FRD_HOLD)
-                    .Active(true)
+                    .active(true)
                     .build());
         }
 
         if (creationFlags.isCreditBlock()) {
             result.add(SalesOrderStatus.builder()
                     .orderStatusId(OrderStatusId.E_CRED_BLK)
-                    .Active(true)
+                    .active(true)
                     .build());
         }
 
