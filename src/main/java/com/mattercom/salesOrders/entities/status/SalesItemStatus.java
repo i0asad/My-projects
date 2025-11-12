@@ -37,7 +37,7 @@ public class SalesItemStatus {
 
     @Column(name = "active", nullable = false)
     @Builder.Default
-    private Boolean Active = true;
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -4,6 +4,7 @@ import com.mattercom.salesOrders.dto.*;
 import com.mattercom.salesOrders.entities.*;
 import com.mattercom.salesOrders.entities.status.*;
 import com.mattercom.salesOrders.enums.DeliverySpeed;
+import com.mattercom.salesOrders.enums.ItemStatusId;
 import com.mattercom.salesOrders.enums.ObjectType;
 import com.mattercom.salesOrders.enums.SalesTransactions;
 import com.mattercom.salesOrders.mapper.SalesOrderMapper;
@@ -223,6 +224,16 @@ public class SalesOrderServiceImpl implements SalesOrderService
     @Transactional
     public SalesOrder addOrderItems(UUID salesOrderId, List<ItemCreationDto> itemsToAdd, Boolean systemChange)
     {
+        if (itemsToAdd.isEmpty())
+        {
+            throw new IllegalArgumentException("Items to add cannot be empty");
+        }
+
+        if(salesOrderId==null)
+        {
+            throw new IllegalArgumentException("SalesOrder ID cannot be null");
+        }
+
         SalesOrder salesOrder = getOrderWithStatus(salesOrderId);
         // Use my standard permission check for updates
         checkUpdatePermission(salesOrder, systemChange);
@@ -317,7 +328,8 @@ public class SalesOrderServiceImpl implements SalesOrderService
     private void cancelOrderIfAllItemsCancelled(SalesOrder salesOrder)
     {
         // Check if any non-cancelled items are left
-        if(salesItemRepository.findNonCancelledItemsByOrderId(salesOrder.getSalesOrderId()).isEmpty())
+        if(salesItemRepository.countItemsNotHavingGivenStatusesByOrderId
+                (salesOrder.getSalesOrderId(),List.of(ItemStatusId.E_CNCL_CUST,ItemStatusId.E_CNCL_SYS))==0)
         {
             List <SalesOrderStatus> newStatuses = StatusManagementUtil.applyOrderStatusChange(salesOrder, SalesTransactions.CANCEL_ORDER);
             salesOrder.setStatusList(newStatuses);

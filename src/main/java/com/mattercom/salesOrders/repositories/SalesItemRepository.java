@@ -1,6 +1,7 @@
 package com.mattercom.salesOrders.repositories;
 
 import com.mattercom.salesOrders.entities.SalesItem;
+import com.mattercom.salesOrders.enums.ItemStatusId;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,16 +27,37 @@ public interface SalesItemRepository extends JpaRepository<SalesItem, UUID>
     })
     List<SalesItem> findWithDetailsByItemIdInAndSalesOrder_SalesOrderId(List<UUID> itemIds, UUID orderOrderId);
 
-    @Query("SELECT si FROM SalesItem si " +
-            "WHERE si.salesOrder.salesOrderId = :orderId " +
-            "AND NOT EXISTS ( " +
-            "    SELECT 1 FROM SalesItemStatus ist " +
-            "    WHERE ist.salesItem = si " +
-            "    AND ist.itemStatusId IN (com.mattercom.salesOrders.enums.ItemStatusId.E_CNCL_CUST, " +
-            "                         com.mattercom.salesOrders.enums.ItemStatusId.E_CNCL_SYS) " +
-            "    AND ist.Active = true " +
-            ")")
-    List<SalesItem> findNonCancelledItemsByOrderId(@Param("salesOrderId") UUID orderId);
+    @Query("""
+  SELECT si FROM SalesItem si
+  WHERE si.salesOrder.salesOrderId = :salesOrderId
+    AND NOT EXISTS (
+      SELECT 1 FROM SalesItemStatus ist
+      WHERE ist.salesItem = si
+        AND ist.itemStatusId IN : statuses
+        AND ist.active = true
+    )
+""")
+    List<SalesItem> findItemsNotHavingGivenStatusesByOrderId(
+            @Param("salesOrderId") UUID salesOrderId,
+            @Param("statuses") List<ItemStatusId> statuses
+    );
+
+    @Query("""
+      SELECT COUNT(si) FROM SalesItem si
+      WHERE si.salesOrder.salesOrderId = :salesOrderId
+        AND NOT EXISTS (
+          SELECT 1 FROM SalesItemStatus ist
+          WHERE ist.salesItem = si
+            AND ist.itemStatusId IN :statuses
+            AND ist.active = true
+        )
+    """)
+    long countItemsNotHavingGivenStatusesByOrderId(
+            @Param("salesOrderId") UUID salesOrderId,
+            @Param("statuses") List<com.mattercom.salesOrders.enums.ItemStatusId> statuses
+    );
+
+
 
 }
 

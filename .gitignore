@@ -42,6 +42,7 @@ build/
 application-local.properties
 application-dev.properties
 application-*.yml
+application-local.yml
 
 # Ignore the final .jar file that Spring Boot builds
 *.jar

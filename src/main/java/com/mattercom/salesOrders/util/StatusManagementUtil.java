@@ -140,7 +140,7 @@ public final class StatusManagementUtil {
                 SalesItemStatus newStatus = SalesItemStatus.builder()
                         .salesItem(item)
                         .itemStatusId(toActivate)
-                        .Active(true)
+                        .active(true)
                         .build();
                 updated.add(newStatus);
                 log.debug("Activated new item status {} for item {}", toActivate, item.getItemId());

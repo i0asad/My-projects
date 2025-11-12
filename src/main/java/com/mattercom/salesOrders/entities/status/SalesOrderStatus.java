@@ -31,6 +31,7 @@ public class SalesOrderStatus {
     @JoinColumn(name = "order_id", nullable = false)
     private SalesOrder salesOrder;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatusId orderStatusId;
 
