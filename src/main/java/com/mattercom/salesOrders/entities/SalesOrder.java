@@ -61,6 +61,9 @@ public class SalesOrder {
     @Column(nullable = false, updatable = false)
     private Boolean recurrent=false;
 
+    @Version
+    private Long version;
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean inTransit=false;

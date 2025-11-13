@@ -38,7 +38,8 @@ public class SalesItem
     @Column(name = "product_name", updatable = false, nullable = false)
     private String productName; //Keeps the name of product at the time of ordering
 
-
+    @Version
+    private Long version;
 
     @Builder.Default
     private Boolean transitActive=false;
