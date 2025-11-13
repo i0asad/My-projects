@@ -22,7 +22,7 @@ public class RecurrentOrderDetails
     private Integer gapInDays;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_Id")
+    @JoinColumn(name = "order_id")
     private SalesOrder salesOrder;
 
     @PositiveOrZero
