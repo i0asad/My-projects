@@ -33,7 +33,7 @@ public interface SalesItemRepository extends JpaRepository<SalesItem, UUID>
     AND NOT EXISTS (
       SELECT 1 FROM SalesItemStatus ist
       WHERE ist.salesItem = si
-        AND ist.itemStatusId IN : statuses
+        AND ist.itemStatusId IN :statuses
         AND ist.active = true
     )
 """)
