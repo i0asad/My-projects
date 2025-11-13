@@ -14,7 +14,8 @@ import java.util.UUID;
 public class ShipmentAddress {
 
     @Id
-    private UUID addressId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long addressId;
 
     @Column(nullable = false)
     private String recipientName;
